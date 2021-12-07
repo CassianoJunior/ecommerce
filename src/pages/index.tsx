@@ -1,11 +1,13 @@
 import type { NextPage } from 'next';
-import MyHead from '../components/MyHead/index';
-import Sidebar from '../components/Sidebar/index';
+import MyHead from '../components/MyHead';
+import Sidebar from '../components/Sidebar';
+import Main from '../components/Main';
 
 const Home: NextPage = () => (
   <>
     <MyHead title='Startech' />
     <Sidebar />
+    <Main />
   </>
 );
 

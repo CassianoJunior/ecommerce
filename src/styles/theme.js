@@ -4,10 +4,10 @@ const config = {
   initialColorMode: 'dark',
   useSystemColorMode: false,
   colors: {
-    highlight: '#44337A',
+    highlight: '#9F7AEA',
     background: '#171923',
     contrast: '#E2E8F0',
-    complementary: '#90CDF4',
+    complementary: '#FAF089',
   },
 };
 

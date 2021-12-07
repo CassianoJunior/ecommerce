@@ -10,6 +10,8 @@ const ToggleTheme = () => {
       isRound='true'
       icon={colorMode === 'dark' ? <FaSun /> : <FaMoon />}
       size='sm'
+      bgColor='complementary'
+      color='background'
     />
   );
 };

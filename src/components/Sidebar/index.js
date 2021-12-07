@@ -6,7 +6,6 @@ import {
   DrawerOverlay,
   DrawerHeader,
   DrawerContent,
-  CloseButton,
   DrawerBody,
   IconButton,
   Icon,
@@ -15,9 +14,10 @@ import {
   Text,
   Link,
   useColorModeValue,
+  Button,
 } from '@chakra-ui/react';
 
-import { HiOutlineMenuAlt1 } from 'react-icons/hi';
+import { HiOutlineMenuAlt1, HiOutlineChevronDoubleLeft } from 'react-icons/hi';
 import { RiHomeLine } from 'react-icons/ri';
 import { GoPackage } from 'react-icons/go';
 import { MdFavorite, MdOutlineAccountCircle } from 'react-icons/md';
@@ -27,25 +27,8 @@ import Logo from '../Logo/index';
 
 const SidebarButton = ({ title, icon }) => (
   <>
-    <Flex
-      py={1}
-      px={4}
-      m={1}
-      color='contrast'
-      align='center'
-      borderRadius='full'
-    >
-      <Icon
-        w={6}
-        h={6}
-        as={icon}
-        mr={2}
-        color={
-          title === 'Wishlist'
-            ? 'red.400' // eslint-disable-next-line react-hooks/rules-of-hooks
-            : useColorModeValue('background', 'contrast')
-        }
-      />
+    <Flex p={2} color='contrast' align='center'>
+      <Icon w={6} h={6} as={icon} mr={2} color='highlight' />
       <Text
         fontWeight='bold'
         fontSize='lg'
@@ -69,6 +52,8 @@ const Sidebar = () => {
           size='sm'
           icon={<HiOutlineMenuAlt1 />}
           onClick={onOpen}
+          bgColor='complementary'
+          color='background'
         />
         <Spacer />
         <Logo />
@@ -79,18 +64,39 @@ const Sidebar = () => {
       <Drawer placement='left' onClose={onClose} isOpen={isOpen} size='xs'>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader borderBottomWidth='1px' display='flex'>
-            <Logo />
-            <Spacer />
-            <CloseButton onClick={onClose} />
+          <DrawerHeader borderBottomWidth='1px'>
+            <Flex display='flex' align='center'>
+              <Logo />
+              <Spacer />
+              <IconButton
+                icon={<HiOutlineChevronDoubleLeft />}
+                onClick={onClose}
+                size='sm'
+                bgColor='complementary'
+                color='background'
+              />
+            </Flex>
           </DrawerHeader>
-          <DrawerBody my={10}>
+          <DrawerBody my={8} display='flex' flexDir='column'>
             <Stack spacing={2}>
               <SidebarButton title='Home' icon={RiHomeLine} />
               <SidebarButton title='My orders' icon={GoPackage} />
               <SidebarButton title='Wishlist' icon={MdFavorite} />
               <SidebarButton title='My account' icon={MdOutlineAccountCircle} />
             </Stack>
+            <Spacer />
+            <Flex align='center' justify='flex-end'>
+              <Button
+                bg='trasparent'
+                border='2px solid'
+                borderColor='highlight'
+                color='highlight'
+                mr={2}
+              >
+                Sign in!
+              </Button>
+              <Button bg='highlight'>Sign up!</Button>
+            </Flex>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
