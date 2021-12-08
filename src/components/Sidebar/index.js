@@ -16,6 +16,7 @@ import {
   useColorModeValue,
   Button,
 } from '@chakra-ui/react';
+import { darken } from '@chakra-ui/theme-tools';
 
 import { HiOutlineMenuAlt1, HiOutlineChevronDoubleLeft } from 'react-icons/hi';
 import { RiHomeLine } from 'react-icons/ri';
@@ -33,6 +34,7 @@ const SidebarButton = ({ title, icon }) => (
         fontWeight='bold'
         fontSize='lg'
         color={useColorModeValue('background', 'contrast')}
+        _hover={{ color: 'highlight' }}
       >
         <Link href='/'>{title}</Link>
       </Text>
@@ -52,7 +54,10 @@ const Sidebar = () => {
           size='sm'
           icon={<HiOutlineMenuAlt1 />}
           onClick={onOpen}
-          bgColor='complementary'
+          bgColor={useColorModeValue(
+            darken('complementary', 20),
+            'complementary',
+          )}
           color='background'
         />
         <Spacer />
@@ -72,7 +77,10 @@ const Sidebar = () => {
                 icon={<HiOutlineChevronDoubleLeft />}
                 onClick={onClose}
                 size='sm'
-                bgColor='complementary'
+                bgColor={useColorModeValue(
+                  darken('complementary', 20),
+                  'complementary',
+                )}
                 color='background'
               />
             </Flex>
@@ -92,10 +100,13 @@ const Sidebar = () => {
                 borderColor='highlight'
                 color='highlight'
                 mr={2}
+                _hover={{ scale: 1.1, transform: 'auto' }}
               >
                 Sign in!
               </Button>
-              <Button bg='highlight'>Sign up!</Button>
+              <Button bg='highlight' _hover={{ scale: 1.1, transform: 'auto' }}>
+                Sign up!
+              </Button>
             </Flex>
           </DrawerBody>
         </DrawerContent>

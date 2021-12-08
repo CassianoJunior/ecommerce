@@ -7,19 +7,19 @@ const products = [
     name: 'Headphone',
     price: 34.9,
     category: 'Smartphones and accessory',
-    thumb: '/fone.png',
+    thumb: '/fone.jpg',
   },
   {
     name: 'Headphones 2',
     price: 54.9,
     category: 'Smartphones and accessories',
-    thumb: '/fone.png',
+    thumb: '/fone.jpg',
   },
   {
     name: 'Shirt',
     price: 30,
     category: 'Clothes',
-    thumb: '/camisa.png',
+    thumb: '/camisa.jpg',
   },
 ];
 
