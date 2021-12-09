@@ -8,6 +8,7 @@ const config = {
     background: '#171923',
     contrast: '#E2E8F0',
     complementary: '#FAF089',
+    complementaryDark: '#F6E05E',
   },
 };
 

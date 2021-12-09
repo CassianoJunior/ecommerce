@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
   Flex,
   Stack,
@@ -16,17 +18,25 @@ import {
   useColorModeValue,
   Button,
 } from '@chakra-ui/react';
-import { darken } from '@chakra-ui/theme-tools';
 
 import { HiOutlineMenuAlt1, HiOutlineChevronDoubleLeft } from 'react-icons/hi';
 import { RiHomeLine } from 'react-icons/ri';
 import { GoPackage } from 'react-icons/go';
 import { MdFavorite, MdOutlineAccountCircle } from 'react-icons/md';
 
+import { IconType } from 'react-icons/lib';
 import ToggleTheme from '../ToggleTheme/index';
 import Logo from '../Logo/index';
 
-const SidebarButton = ({ title, icon }) => (
+interface ISidebarButton {
+  title: string;
+  icon: IconType;
+}
+
+const SidebarButton: React.FC<ISidebarButton> = ({
+  title,
+  icon,
+}: ISidebarButton) => (
   <>
     <Flex p={2} color='contrast' align='center'>
       <Icon w={6} h={6} as={icon} mr={2} color='highlight' />
@@ -43,7 +53,7 @@ const SidebarButton = ({ title, icon }) => (
   </>
 );
 
-const Sidebar = () => {
+const Sidebar: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -57,14 +67,12 @@ const Sidebar = () => {
         py={2}
       >
         <IconButton
-          isRound='true'
+          aria-label='openSidebar'
+          isRound
           size='sm'
           icon={<HiOutlineMenuAlt1 />}
           onClick={onOpen}
-          bgColor={useColorModeValue(
-            darken('complementary', 20),
-            'complementary',
-          )}
+          bgColor='complementary'
           color='background'
         />
         <Spacer />
@@ -81,13 +89,11 @@ const Sidebar = () => {
               <Logo />
               <Spacer />
               <IconButton
+                aria-label='closeSidebar'
                 icon={<HiOutlineChevronDoubleLeft />}
                 onClick={onClose}
                 size='sm'
-                bgColor={useColorModeValue(
-                  darken('complementary', 20),
-                  'complementary',
-                )}
+                bgColor='complementary'
                 color='background'
               />
             </Flex>

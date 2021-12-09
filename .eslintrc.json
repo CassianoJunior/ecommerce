@@ -33,6 +33,12 @@
       "react/jsx-curly-spacing": [2, { "when": "never", "children": true }],
       "jsx-quotes": ["error", "prefer-single"],
       "object-curly-newline": ["error", { "multiline": true }],
-      "arrow-parens": ["error", "as-needed"]
+      "arrow-parens": ["error", "as-needed"],
+      "import/extensions": 0
+    },
+    "settings": {
+      "import/parsers": {
+        "@typescript-eslint/parser": [".ts", ".tsx"]
+      }
     }
 }

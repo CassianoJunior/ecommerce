@@ -1,5 +1,6 @@
+import React from 'react';
 import { Flex, Box, Text, useColorModeValue } from '@chakra-ui/react';
-import Image from 'next/image';
+// import Image from 'next/image';
 
 export interface IProduct {
   name: string;
@@ -8,7 +9,12 @@ export interface IProduct {
   thumb: string;
 }
 
-const Product = ({ name, price, category, thumb }: IProduct) => (
+const Product: React.FC<IProduct> = ({
+  name,
+  price,
+  category,
+}: // thumb,
+IProduct) => (
   <Flex
     flexDir='column'
     border='1px solid'

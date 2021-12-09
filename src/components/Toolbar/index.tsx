@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React from 'react';
 
 import {
   Flex,
@@ -11,7 +11,7 @@ import {
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { MdFavorite, MdOutlineAccountCircle } from 'react-icons/md';
 
-const Toolbar = () => (
+const Toolbar: React.FC = () => (
   <Flex
     bottom={0}
     position='fixed'
