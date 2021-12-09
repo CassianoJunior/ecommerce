@@ -48,7 +48,14 @@ const Sidebar = () => {
 
   return (
     <>
-      <Flex justify='center' align='center' m='auto' maxW={['380px']} py={4}>
+      <Flex
+        justify='center'
+        align='center'
+        m='auto'
+        w='100%'
+        maxW={['380px']}
+        py={2}
+      >
         <IconButton
           isRound='true'
           size='sm'
