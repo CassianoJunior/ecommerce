@@ -24,7 +24,7 @@ const products = [
 ];
 
 const Main: React.FC = () => (
-  <Flex>
+  <Flex wrap='wrap' m='auto' justify='center' align='center' overflow='scroll'>
     {products.map(({ name, category, price, thumb }: IProduct) => (
       <Product
         name={name}
