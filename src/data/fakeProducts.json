@@ -1,0 +1,45 @@
+[
+  {
+    "id": 1,
+    "name": "Headphone com nome grande para um krl de asa pqp que nome grande mds",
+    "price": 34.9,
+    "category": "Smartphones and accessory",
+    "thumb": "/fone.jpg",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+  },
+  {
+    "id": 2,
+    "name": "Headphones 2",
+    "price": 54.9,
+    "category": "Smartphones and accessories",
+    "thumb": "/fone.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Shirt",
+    "price": 30,
+    "category": "Clothes",
+    "thumb": "/camisa.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Headphone 3",
+    "price": 34.9,
+    "category": "Smartphones and accessory",
+    "thumb": "/fone.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Headphones 4",
+    "price": 54.9,
+    "category": "Smartphones and accessories",
+    "thumb": "/fone.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Shirt 2",
+    "price": 30,
+    "category": "Clothes",
+    "thumb": "/camisa.jpg"
+  }
+]

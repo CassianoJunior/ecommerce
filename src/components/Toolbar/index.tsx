@@ -20,6 +20,7 @@ const Toolbar: React.FC = () => (
     py={2}
     borderTopEndRadius={25}
     borderTopStartRadius={25}
+    zIndex={10}
   >
     <Button
       width='100%'
