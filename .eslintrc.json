@@ -34,7 +34,8 @@
       "jsx-quotes": ["error", "prefer-single"],
       "object-curly-newline": ["error", { "multiline": true }],
       "arrow-parens": ["error", "as-needed"],
-      "import/extensions": 0
+      "import/extensions": 0,
+      "operator-linebreak": ["error", "after"]
     },
     "settings": {
       "import/parsers": {

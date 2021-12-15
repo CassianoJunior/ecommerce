@@ -2,23 +2,18 @@ import React from 'react';
 
 import { Flex } from '@chakra-ui/react';
 
-import Product, { IProduct } from '../Product';
+import { Product as ProductType } from 'chec__commerce.js/types/product';
+import Product from '../Product';
 
-import products from '../../data/fakeProducts.json';
+interface IMainComponentProps {
+  products: ProductType[];
+}
 
-const Main: React.FC = () => (
+const Main: React.FC<IMainComponentProps> = ({ products }) => (
   <Flex wrap='wrap' m='auto' justify='center' overflow='scroll' my={20}>
-    {products.map(({ id, name, category, price, thumb }: IProduct) => (
-      <Product
-        id={id}
-        name={name}
-        category={category}
-        price={price}
-        thumb={thumb}
-        key={name}
-      />
+    {products.map(product => (
+      <Product product={product} key={product.id} />
     ))}
   </Flex>
 );
-
 export default Main;

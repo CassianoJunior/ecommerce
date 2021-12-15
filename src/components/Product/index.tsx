@@ -6,72 +6,80 @@ import {
   Button,
   Icon,
   Link,
+  Tooltip,
   useColorModeValue,
 } from '@chakra-ui/react';
 import Image from 'next/image';
 
 import { MdFavorite, MdOutlineFavoriteBorder } from 'react-icons/md';
-import { useRouter } from 'next/router';
+
+import NextLink from 'next/link';
+import { Product as ProductType } from 'chec__commerce.js/types/product';
 import styles from './product.module.css';
 
-export interface IProduct {
-  id: number;
-  name: string;
-  price: number;
-  category: string;
-  thumb: string;
-  description?: string;
+interface IProductComponentProps {
+  product: ProductType;
+  // eslint-disable-next-line react/require-default-props
+  related?: boolean;
 }
 
-const Product: React.FC<IProduct> = ({
-  id,
-  name,
-  price,
-  category,
-  thumb,
-}: IProduct) => {
-  const router = useRouter();
+const Product: React.FC<IProductComponentProps> = ({ product, related }) => {
+  const { name } = product;
+  const price = product.price.formatted_with_symbol;
+  const img = product.image && product.image.url;
+  const category =
+    product.categories && product.categories[0] && product.categories[0].name;
 
   const isFavorited = false;
 
   return (
-    <Flex
-      flexDir='column'
-      border='1px solid'
-      borderColor={useColorModeValue('background', 'contrast')}
-      borderRadius={10}
-      py={2}
-      px={3}
-      m={2}
-      onClick={() => {
-        router.push(`/products/${id}`);
-      }}
-    >
-      <Box borderRadius={10} pos='relative'>
-        <Image
-          src={thumb}
-          alt={name}
-          width='300px'
-          height='300px'
-          className={styles.image}
-        />
-        <Button bottom={2} right={1} p={0} pos='absolute' bgColor='transparent'>
-          <Icon
-            as={isFavorited ? MdFavorite : MdOutlineFavoriteBorder}
-            w={6}
-            h={6}
-            color='highlight'
+    <NextLink href={`/products/${product.permalink}`}>
+      <Flex
+        flexDir='column'
+        border='1px solid'
+        borderColor={useColorModeValue('background', 'contrast')}
+        borderRadius={10}
+        py={2}
+        px={3}
+        maxW={related ? '150px' : '320px'}
+        m={2}
+      >
+        <Box borderRadius={10}>
+          <Image
+            src={img || ''}
+            alt={name}
+            width='300px'
+            height='300px'
+            className={styles.image}
           />
-        </Button>
-      </Box>
-      <Box my={2}>
-        <Text>
-          <Link href='/'>{name}</Link>
-        </Text>
-        <Text fontSize='sm'>{category}</Text>
-        <Text fontWeight='bold'>{`R$ ${price.toFixed(2)}`}</Text>
-      </Box>
-    </Flex>
+        </Box>
+        <Box my={2}>
+          <Flex justify='space-between' align='center'>
+            <Text>
+              <Link href={`/products/${product.permalink}`}>
+                {related ? (
+                  <Tooltip aria-label='tip' label={name}>
+                    {`${name.substring(0, 15)} ...`}
+                  </Tooltip>
+                ) : (
+                  name
+                )}
+              </Link>
+            </Text>
+            <Button bgColor='transparent'>
+              <Icon
+                as={isFavorited ? MdFavorite : MdOutlineFavoriteBorder}
+                w={6}
+                h={6}
+                color='highlight'
+              />
+            </Button>
+          </Flex>
+          <Text fontSize='sm'>{category}</Text>
+          <Text fontWeight='bold'>{price}</Text>
+        </Box>
+      </Flex>
+    </NextLink>
   );
 };
 

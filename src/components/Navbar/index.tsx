@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, HStack } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 
 const Navbar: React.FC = () => <Flex />;
 
