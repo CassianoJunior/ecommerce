@@ -33,6 +33,7 @@ import Toolbar from '../../src/components/Toolbar';
 import styles from '../../src/components/Product/product.module.css';
 import commerce from '../../src/config/commerce';
 import RelatedProducts from '../../src/components/RelatedProducts';
+import { useCartDispatchContext } from '../../src/contexts/CartContext';
 
 interface IParams extends ParsedUrlQuery {
   permalink: string;
@@ -62,7 +63,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false,
+    fallback: true,
   };
 };
 
@@ -72,11 +73,12 @@ interface IProductPageProps {
 
 const ProductPage: NextPage<IProductPageProps> = ({ product }) => {
   const router = useRouter();
+  const { setCart } = useCartDispatchContext();
 
   const isFavorited = false;
 
   if (product) {
-    const { description, name } = product;
+    const { description, name, id } = product;
     const price = product.price.formatted_with_symbol;
     const img = product.image && product.image.url;
     const category =
@@ -85,6 +87,12 @@ const ProductPage: NextPage<IProductPageProps> = ({ product }) => {
     const formatDescription = (des: string) => {
       const withwoutStartTags = des.replace(/[<][p][>]/gi, '');
       return withwoutStartTags.replace(/[<][/][p][>]/gi, '\n');
+    };
+
+    const addToCart = (productId: string) => {
+      commerce.cart.add(productId, 1).then(({ cart }) => {
+        setCart(cart);
+      });
     };
 
     return (
@@ -110,7 +118,7 @@ const ProductPage: NextPage<IProductPageProps> = ({ product }) => {
             bg='trasparent'
             _hover={{ backgroundColor: 'none' }}
             onClick={() => {
-              router.push('/');
+              router.back();
             }}
           />
           <Flex w='90%'>
@@ -148,6 +156,10 @@ const ProductPage: NextPage<IProductPageProps> = ({ product }) => {
               // eslint-disable-next-line react-hooks/rules-of-hooks
               bgColor={useColorModeValue('background', 'contrast')}
               _hover={{ backgroundColor: 'none' }}
+              onClick={e => {
+                e.preventDefault();
+                addToCart(id);
+              }}
             >
               Add to cart
             </Button>

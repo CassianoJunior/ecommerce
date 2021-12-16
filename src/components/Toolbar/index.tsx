@@ -8,53 +8,64 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 
-import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { MdFavorite, MdOutlineAccountCircle } from 'react-icons/md';
 
-const Toolbar: React.FC = () => (
-  <Flex
-    bottom={0}
-    position='fixed'
-    w='100%'
-    bgColor={useColorModeValue('background', 'contrast')}
-    py={2}
-    borderTopEndRadius={25}
-    borderTopStartRadius={25}
-    zIndex={10}
-  >
-    <Button
-      width='100%'
-      display='flex'
-      align='center'
-      justify='center'
-      bg='trasparent'
-      _hover={{ background: 'trasparent' }}
+import { useRouter } from 'next/router';
+import IconWithBadge from '../IconWithBadge';
+import { useCartStateContext } from '../../contexts/CartContext';
+
+const Toolbar: React.FC = () => {
+  const router = useRouter();
+  const { total_items: totalItems } = useCartStateContext();
+
+  return (
+    <Flex
+      bottom={0}
+      position='fixed'
+      w='100%'
+      bgColor={useColorModeValue('background', 'contrast')}
+      py={2}
+      borderTopEndRadius={25}
+      borderTopStartRadius={25}
+      zIndex={10}
     >
-      <Icon as={MdOutlineAccountCircle} color='highlight' w={8} h={8} />
-    </Button>
-    <Spacer />
-    <Button
-      width='100%'
-      display='flex'
-      align='center'
-      justify='center'
-      bg='trasparent'
-      _hover={{ background: 'trasparent' }}
-    >
-      <Icon as={AiOutlineShoppingCart} color='highlight' w={8} h={8} />
-    </Button>
-    <Spacer />
-    <Button
-      width='100%'
-      display='flex'
-      align='center'
-      justify='center'
-      bg='trasparent'
-      _hover={{ background: 'trasparent' }}
-    >
-      <Icon as={MdFavorite} color='highlight' w={8} h={8} />
-    </Button>
-  </Flex>
-);
+      <Button
+        width='100%'
+        display='flex'
+        align='center'
+        justify='center'
+        bg='trasparent'
+        _hover={{ background: 'trasparent' }}
+      >
+        <Icon as={MdOutlineAccountCircle} color='highlight' w={8} h={8} />
+      </Button>
+      <Spacer />
+      <Button
+        width='100%'
+        display='flex'
+        align='center'
+        justify='center'
+        bg='trasparent'
+        _hover={{ background: 'trasparent' }}
+        onClick={() => {
+          router.push('/cart');
+        }}
+      >
+        <IconWithBadge quantity={totalItems} />
+      </Button>
+      <Spacer />
+      <Button
+        width='100%'
+        display='flex'
+        align='center'
+        justify='center'
+        bg='trasparent'
+        _hover={{ background: 'trasparent' }}
+      >
+        <Icon as={MdFavorite} color='highlight' w={8} h={8} />
+      </Button>
+    </Flex>
+  );
+};
 
 export default Toolbar;
