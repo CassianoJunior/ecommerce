@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 import {
   Flex,
@@ -14,7 +15,6 @@ import {
   Spacer,
   Divider,
   Text,
-  Link,
   useColorModeValue,
   Button,
 } from '@chakra-ui/react';
@@ -31,14 +31,16 @@ import Logo from '../Logo/index';
 interface ISidebarButton {
   title: string;
   icon: IconType;
+  onClose: () => void;
 }
 
 const SidebarButton: React.FC<ISidebarButton> = ({
   title,
   icon,
+  onClose,
 }: ISidebarButton) => (
   <>
-    <Flex p={2} color='contrast' align='center'>
+    <Flex p={2} color='contrast' align='center' onClick={onClose}>
       <Icon w={6} h={6} as={icon} mr={2} color='highlight' />
       <Text
         fontWeight='bold'
@@ -100,10 +102,22 @@ const Sidebar: React.FC = () => {
           </DrawerHeader>
           <DrawerBody my={8} display='flex' flexDir='column'>
             <Stack spacing={2}>
-              <SidebarButton title='Home' icon={RiHomeLine} />
-              <SidebarButton title='My orders' icon={GoPackage} />
-              <SidebarButton title='Wishlist' icon={MdFavorite} />
-              <SidebarButton title='My account' icon={MdOutlineAccountCircle} />
+              <SidebarButton onClose={onClose} title='Home' icon={RiHomeLine} />
+              <SidebarButton
+                onClose={onClose}
+                title='My orders'
+                icon={GoPackage}
+              />
+              <SidebarButton
+                onClose={onClose}
+                title='Wishlist'
+                icon={MdFavorite}
+              />
+              <SidebarButton
+                onClose={onClose}
+                title='My account'
+                icon={MdOutlineAccountCircle}
+              />
             </Stack>
             <Spacer />
             <Flex align='center' justify='flex-end'>

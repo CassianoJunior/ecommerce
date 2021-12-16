@@ -10,12 +10,13 @@ import {
 
 import { MdFavorite, MdOutlineAccountCircle } from 'react-icons/md';
 
-import { useRouter } from 'next/router';
+import Link from 'next/link';
+// import { useRouter } from 'next/router';
 import IconWithBadge from '../IconWithBadge';
 import { useCartStateContext } from '../../contexts/CartContext';
 
 const Toolbar: React.FC = () => {
-  const router = useRouter();
+  // const router = useRouter();
   const { total_items: totalItems } = useCartStateContext();
 
   return (
@@ -40,19 +41,18 @@ const Toolbar: React.FC = () => {
         <Icon as={MdOutlineAccountCircle} color='highlight' w={8} h={8} />
       </Button>
       <Spacer />
-      <Button
-        width='100%'
-        display='flex'
-        align='center'
-        justify='center'
-        bg='trasparent'
-        _hover={{ background: 'trasparent' }}
-        onClick={() => {
-          router.push('/cart');
-        }}
-      >
-        <IconWithBadge quantity={totalItems} />
-      </Button>
+      <Link href='/cart' passHref>
+        <Button
+          width='100%'
+          display='flex'
+          align='center'
+          justify='center'
+          bg='trasparent'
+          _hover={{ background: 'trasparent' }}
+        >
+          <IconWithBadge quantity={totalItems} />
+        </Button>
+      </Link>
       <Spacer />
       <Button
         width='100%'

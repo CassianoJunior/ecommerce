@@ -3,9 +3,9 @@ import React, {
   Reducer,
   useContext,
   useEffect,
+  useMemo,
   useReducer,
 } from 'react';
-import { Product } from 'chec__commerce.js/types/product';
 import { LineItem } from '@chec/commerce.js/types/line-item';
 import commerce from '../config/commerce';
 
@@ -16,7 +16,14 @@ type IAction =
   | { type: typeof SET_CART; payload?: any }
   | { type: typeof RESET };
 
+export type Subtotal = {
+  formatted: string;
+  formatted_with_code: string;
+  formatted_with_symbol: string;
+  raw: number;
+};
 interface ICartInitialState {
+  subtotal: Subtotal;
   total_items: number;
   total_unique_items: number;
   line_items: LineItem[];
@@ -26,9 +33,19 @@ const initialState: ICartInitialState = {
   total_items: 0,
   total_unique_items: 0,
   line_items: [],
+  subtotal: {
+    formatted: '',
+    formatted_with_code: '',
+    formatted_with_symbol: '',
+    raw: 0,
+  },
 };
 
-const initialDispacth = { setCart(cart: any) {}, resetCart() {} };
+const initialDispacth = {
+  // eslint-disable-next-line no-unused-vars
+  setCart: (payload: any) => {},
+  resetCart: () => {},
+};
 
 const CartStateContext = createContext(initialState);
 const CartDispatchContext = createContext(initialDispacth);
@@ -66,9 +83,12 @@ const CartProvider: React.FC = ({ children }) => {
     getCart();
   }, []);
 
+  const memoState = useMemo(() => ({ ...state }), [state]);
+  const memoDispatch = useMemo(() => ({ setCart, resetCart }), []);
+
   return (
-    <CartDispatchContext.Provider value={{ setCart, resetCart }}>
-      <CartStateContext.Provider value={{ ...state }}>
+    <CartDispatchContext.Provider value={memoDispatch}>
+      <CartStateContext.Provider value={memoState}>
         {children}
       </CartStateContext.Provider>
     </CartDispatchContext.Provider>

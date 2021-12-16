@@ -9,7 +9,15 @@ interface ICartComponentProps {
 }
 
 const Cart: React.FC<ICartComponentProps> = ({ cartItems }) => (
-  <Flex>
+  <Flex
+    flexDir='column'
+    border='1px solid'
+    borderRadius='10px'
+    w='100%'
+    maxW='360px'
+    m='0 auto'
+    px={4}
+  >
     {cartItems.map(item => (
       <Cartitem item={item} key={item.id} />
     ))}
