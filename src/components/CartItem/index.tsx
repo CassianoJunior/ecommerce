@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 import React from 'react';
 import Image from 'next/image';
 
@@ -6,7 +7,6 @@ import { LineItem } from '@chec/commerce.js/types/line-item';
 import {
   Flex,
   Text,
-  Button,
   Box,
   Divider,
   IconButton,
@@ -24,7 +24,7 @@ interface ICartItemComponentProps {
 }
 
 const Cartitem: React.FC<ICartItemComponentProps> = ({ item }) => {
-  const { resetCart, setCart } = useCartDispatchContext();
+  const { setCart } = useCartDispatchContext();
 
   return (
     <>
@@ -53,7 +53,6 @@ const Cartitem: React.FC<ICartItemComponentProps> = ({ item }) => {
                   _hover={{ background: 'transparent' }}
                   onClick={async e => {
                     e.preventDefault();
-                    console.log(item);
                     const { cart } = await commerce.cart.update(item.id, {
                       quantity: item.quantity - 1,
                     });
@@ -94,8 +93,12 @@ const Cartitem: React.FC<ICartItemComponentProps> = ({ item }) => {
         />
       </Flex>
       <Text>
-        Subtotal item:
-        <Text fontWeight='bold'>{item.line_total.formatted_with_symbol}</Text>
+        {`Unity price: ${item.price.formatted_with_symbol} x
+          ${item.quantity}`}
+
+        <Text fontWeight='bold'>
+          {`Subtotal item: ${item.line_total.formatted_with_symbol}`}
+        </Text>
       </Text>
 
       <Divider />

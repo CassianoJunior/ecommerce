@@ -17,6 +17,7 @@ const Cart: React.FC<ICartComponentProps> = ({ cartItems }) => (
     maxW='360px'
     m='0 auto'
     px={4}
+    py={2}
   >
     {cartItems.map(item => (
       <Cartitem item={item} key={item.id} />
