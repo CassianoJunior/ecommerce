@@ -11,6 +11,7 @@ import {
   Divider,
   IconButton,
   CloseButton,
+  useToast,
 } from '@chakra-ui/react';
 
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
@@ -25,6 +26,7 @@ interface ICartItemComponentProps {
 
 const Cartitem: React.FC<ICartItemComponentProps> = ({ item }) => {
   const { setCart } = useCartDispatchContext();
+  const toast = useToast();
 
   return (
     <>
@@ -56,7 +58,16 @@ const Cartitem: React.FC<ICartItemComponentProps> = ({ item }) => {
                     const { cart } = await commerce.cart.update(item.id, {
                       quantity: item.quantity - 1,
                     });
-                    setCart(cart);
+                    await setCart(cart);
+                    toast({
+                      description: `One"${item.name}" has been removed from your
+                      cart. Total subitem: R$${(
+                        item.line_total.raw - item.price.raw
+                      ).toFixed(2)}.`,
+                      status: 'success',
+                      duration: 2000,
+                      isClosable: true,
+                    });
                   }}
                 />
                 <Text px={2}>{item.quantity}</Text>
@@ -73,7 +84,16 @@ const Cartitem: React.FC<ICartItemComponentProps> = ({ item }) => {
                     const { cart } = await commerce.cart.update(item.id, {
                       quantity: item.quantity + 1,
                     });
-                    setCart(cart);
+                    await setCart(cart);
+                    toast({
+                      description: `One"${item.name}" has been added to your
+                      cart. Total subitem: R$${(
+                        item.line_total.raw + item.price.raw
+                      ).toFixed(2)}.`,
+                      status: 'success',
+                      duration: 2000,
+                      isClosable: true,
+                    });
                   }}
                 />
               </Flex>
@@ -89,6 +109,12 @@ const Cartitem: React.FC<ICartItemComponentProps> = ({ item }) => {
               quantity: 0,
             });
             setCart(cart);
+            toast({
+              description: `"${item.name}" has been removed from your cart.`,
+              status: 'success',
+              duration: 2000,
+              isClosable: true,
+            });
           }}
         />
       </Flex>

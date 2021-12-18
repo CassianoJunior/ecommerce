@@ -3,8 +3,10 @@ import React from 'react';
 import { NextPage } from 'next';
 import Link from 'next/link';
 
-import { Flex, Heading, Text, Button } from '@chakra-ui/react';
+import { Flex, Heading, Text, Button, IconButton } from '@chakra-ui/react';
 
+import { IoChevronBackOutline } from 'react-icons/io5';
+import { useRouter } from 'next/router';
 import Header from '../src/components/Header';
 import Cart from '../src/components/Cart';
 
@@ -47,11 +49,27 @@ const CartPage: NextPage = () => {
     subtotal,
   } = useCartStateContext();
 
+  const router = useRouter();
+
   return totalItems !== 0 ? (
     <>
       <Header />
       <Flex my={20} flexDir='column' maxW='390px' w='100%' mx='auto'>
-        <Heading mb={3}>My Cart</Heading>
+        <Flex>
+          <IconButton
+            aria-label='backHome'
+            icon={<IoChevronBackOutline />}
+            isRound
+            size='md'
+            bg='trasparent'
+            onClick={() => {
+              router.back();
+            }}
+          />
+          <Heading ml={2} mb={3}>
+            My Cart
+          </Heading>
+        </Flex>
         <Cart cartItems={lineItems} />
       </Flex>
       <CheckoutButton subtotal={subtotal} />
@@ -60,7 +78,21 @@ const CartPage: NextPage = () => {
     <>
       <Header />
       <Flex my={20} flexDir='column' maxW='390px' w='100%' mx='auto'>
-        <Heading mb={3}>My Cart</Heading>
+        <Flex>
+          <IconButton
+            aria-label='backHome'
+            icon={<IoChevronBackOutline />}
+            isRound
+            size='md'
+            bg='trasparent'
+            onClick={() => {
+              router.back();
+            }}
+          />
+          <Heading ml={2} mb={3}>
+            My Cart
+          </Heading>
+        </Flex>
         <Flex flexDir='column' align='center' justify='center'>
           <Heading mb={4} size='md'>
             Your cart is empty, add some items!

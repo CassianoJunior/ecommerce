@@ -20,6 +20,7 @@ import {
   AccordionPanel,
   AccordionIcon,
   AccordionButton,
+  useToast,
 } from '@chakra-ui/react';
 
 import { Product } from 'chec__commerce.js/types/product';
@@ -74,6 +75,7 @@ interface IProductPageProps {
 const ProductPage: NextPage<IProductPageProps> = ({ product }) => {
   const router = useRouter();
   const { setCart } = useCartDispatchContext();
+  const toast = useToast();
 
   const isFavorited = false;
 
@@ -158,6 +160,12 @@ const ProductPage: NextPage<IProductPageProps> = ({ product }) => {
             onClick={e => {
               e.preventDefault();
               addToCart(id);
+              toast({
+                description: `"${name}" as been added on your cart`,
+                status: 'success',
+                duration: 2000,
+                isClosable: true,
+              });
             }}
           >
             Add to cart
