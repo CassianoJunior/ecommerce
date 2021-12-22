@@ -44,7 +44,7 @@ const Cartitem: React.FC<ICartItemComponentProps> = ({ item }) => {
           <Text p={2}>{item.name}</Text>
           <Box>
             <Flex justify='space-between' w='90%' m='0 auto' align='center'>
-              <Text>{`x ${item.quantity}`}</Text>
+              <Text>{item.price.formatted_with_symbol}</Text>
               <Flex align='center' justify='center'>
                 <IconButton
                   aria-label='minus'
@@ -119,12 +119,8 @@ const Cartitem: React.FC<ICartItemComponentProps> = ({ item }) => {
         />
       </Flex>
       <Text>
-        {`Unity price: ${item.price.formatted_with_symbol} x
-          ${item.quantity}`}
-
-        <Text fontWeight='bold'>
-          {`Subtotal item: ${item.line_total.formatted_with_symbol}`}
-        </Text>
+        Subtotal item:
+        <Text fontWeight='bold'>{item.line_total.formatted_with_symbol}</Text>
       </Text>
 
       <Divider />

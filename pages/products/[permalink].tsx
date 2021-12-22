@@ -1,5 +1,5 @@
 /* eslint-disable object-curly-newline */
-import React from 'react';
+import React, { useState } from 'react';
 
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -21,6 +21,8 @@ import {
   AccordionIcon,
   AccordionButton,
   useToast,
+  HStack,
+  Tag,
 } from '@chakra-ui/react';
 
 import { Product } from 'chec__commerce.js/types/product';
@@ -79,20 +81,78 @@ const ProductPage: NextPage<IProductPageProps> = ({ product }) => {
 
   const isFavorited = false;
 
-  const { description, name, id } = product;
+  const {
+    description,
+    name,
+    id,
+    variant_groups: variantGroups,
+    assets,
+  } = product;
+
+  const [
+    { url: urlDefault },
+    { url: greenUrl },
+    { url: yellowUrl },
+    { url: blackUrl },
+    { url: whiteUrl },
+    { url: blueUrl },
+    { url: pinkUrl },
+  ] = assets;
+
   const price = product.price.formatted_with_symbol;
   const img = product.image && product.image.url;
   const category =
     product.categories && product.categories[0] && product.categories[0].name;
+
+  const [imageSelected, setImageSelected] = useState(img);
 
   const formatDescription = (des: string) => {
     const withwoutStartTags = des.replace(/[<][p][>]/gi, '');
     return withwoutStartTags.replace(/[<][/][p][>]/gi, '\n');
   };
 
-  const addToCart = (productId: string) => {
-    commerce.cart.add(productId, 1).then(({ cart }) => {
-      setCart(cart);
+  const addToCart = async (productId: string) => {
+    const { cart } = await commerce.cart.add(productId, 1);
+
+    setCart(cart);
+  };
+
+  const handleImage = (variantName: string) => {
+    switch (variantName) {
+      case 'Pink':
+        setImageSelected(pinkUrl);
+        break;
+      case 'Blue':
+        setImageSelected(blueUrl);
+        break;
+      case 'Black':
+        setImageSelected(blackUrl);
+        break;
+      case 'White':
+        setImageSelected(whiteUrl);
+        break;
+      case 'Green':
+        setImageSelected(greenUrl);
+        break;
+      case 'Yellow':
+        setImageSelected(yellowUrl);
+        break;
+      default:
+        setImageSelected(urlDefault);
+    }
+  };
+
+  const handleVariant = (variantId: string) => {
+    variantGroups[0].options.forEach(variant => {
+      if (variantId === variant.id) {
+        const tag = document.getElementById(variant.id);
+        if (tag) tag.style.backgroundColor = '#9F7AEA';
+
+        handleImage(variant.name);
+      } else {
+        const tag = document.getElementById(variant.id);
+        if (tag) tag.style.backgroundColor = '#e2e8f020';
+      }
     });
   };
 
@@ -141,7 +201,7 @@ const ProductPage: NextPage<IProductPageProps> = ({ product }) => {
         </Flex>
         <Box p={1} m={2}>
           <Image
-            src={img || ''}
+            src={imageSelected || ''}
             width='300px'
             height='300px'
             alt={name}
@@ -157,9 +217,9 @@ const ProductPage: NextPage<IProductPageProps> = ({ product }) => {
             // eslint-disable-next-line react-hooks/rules-of-hooks
             bgColor={useColorModeValue('background', 'contrast')}
             _hover={{ backgroundColor: 'none' }}
-            onClick={e => {
+            onClick={async e => {
               e.preventDefault();
-              addToCart(id);
+              await addToCart(id);
               toast({
                 description: `"${name}" as been added on your cart`,
                 status: 'success',
@@ -171,6 +231,25 @@ const ProductPage: NextPage<IProductPageProps> = ({ product }) => {
             Add to cart
           </Button>
         </Flex>
+        {variantGroups[0] && (
+          <Flex flexDir='column'>
+            <Text>{`Select ${variantGroups[0].name}`}</Text>
+            <HStack wrap='wrap'>
+              {variantGroups[0].options.map(opt => (
+                <Tag
+                  key={opt.id}
+                  id={opt.id}
+                  onClick={e => {
+                    e.preventDefault();
+                    handleVariant(opt.id);
+                  }}
+                >
+                  {opt.name}
+                </Tag>
+              ))}
+            </HStack>
+          </Flex>
+        )}
         <Flex my={4} w='90%'>
           <Accordion allowMultiple w='100%'>
             <AccordionItem>
