@@ -60,12 +60,14 @@ const Cartitem: React.FC<ICartItemComponentProps> = ({ item }) => {
                     });
                     await setCart(cart);
                     toast({
-                      description: `One"${item.name}" has been removed from your
+                      description: `One "${
+                        item.name
+                      }" has been removed from your
                       cart. Total subitem: R$${(
                         item.line_total.raw - item.price.raw
                       ).toFixed(2)}.`,
                       status: 'success',
-                      duration: 2000,
+                      duration: 3500,
                       isClosable: true,
                     });
                   }}
@@ -86,12 +88,12 @@ const Cartitem: React.FC<ICartItemComponentProps> = ({ item }) => {
                     });
                     await setCart(cart);
                     toast({
-                      description: `One"${item.name}" has been added to your
+                      description: `One "${item.name}" has been added to your
                       cart. Total subitem: R$${(
                         item.line_total.raw + item.price.raw
                       ).toFixed(2)}.`,
                       status: 'success',
-                      duration: 2000,
+                      duration: 3500,
                       isClosable: true,
                     });
                   }}
@@ -112,7 +114,7 @@ const Cartitem: React.FC<ICartItemComponentProps> = ({ item }) => {
             toast({
               description: `"${item.name}" has been removed from your cart.`,
               status: 'success',
-              duration: 2000,
+              duration: 3500,
               isClosable: true,
             });
           }}

@@ -89,22 +89,20 @@ const ProductPage: NextPage<IProductPageProps> = ({ product }) => {
     assets,
   } = product;
 
-  const [
-    { url: urlDefault },
-    { url: greenUrl },
-    { url: yellowUrl },
-    { url: blackUrl },
-    { url: whiteUrl },
-    { url: blueUrl },
-    { url: pinkUrl },
-  ] = assets;
-
   const price = product.price.formatted_with_symbol;
   const img = product.image && product.image.url;
   const category =
     product.categories && product.categories[0] && product.categories[0].name;
 
   const [imageSelected, setImageSelected] = useState(img);
+
+  const images: String[] = [];
+
+  assets.forEach(asset => {
+    images.push(asset.url);
+  });
+
+  console.log(images);
 
   const formatDescription = (des: string) => {
     const withwoutStartTags = des.replace(/[<][p][>]/gi, '');
@@ -117,28 +115,17 @@ const ProductPage: NextPage<IProductPageProps> = ({ product }) => {
     setCart(cart);
   };
 
-  const handleImage = (variantName: string) => {
-    switch (variantName) {
-      case 'Pink':
-        setImageSelected(pinkUrl);
-        break;
-      case 'Blue':
-        setImageSelected(blueUrl);
-        break;
-      case 'Black':
-        setImageSelected(blackUrl);
-        break;
-      case 'White':
-        setImageSelected(whiteUrl);
-        break;
-      case 'Green':
-        setImageSelected(greenUrl);
-        break;
-      case 'Yellow':
-        setImageSelected(yellowUrl);
-        break;
-      default:
-        setImageSelected(urlDefault);
+  const handleImage = (action: string, index: number) => {
+    if (index === 0 && action === 'BACK') return;
+    if (index === images.length && action === 'NEXT') return;
+
+    if (action === 'BACK') {
+      return images[index - 1];
+    }
+
+    if (action === 'NEXT') {
+      index += 1;
+      return images[index + 1];
     }
   };
 
