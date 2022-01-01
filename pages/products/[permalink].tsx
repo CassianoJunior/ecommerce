@@ -30,6 +30,7 @@ import { ParsedUrlQuery } from 'querystring';
 
 import { MdFavorite, MdOutlineFavoriteBorder } from 'react-icons/md';
 import { IoChevronBackOutline } from 'react-icons/io5';
+import { BsArrowLeftShort, BsArrowRightShort } from 'react-icons/bs';
 
 import Header from '../../src/components/Header';
 import Toolbar from '../../src/components/Toolbar';
@@ -95,6 +96,7 @@ const ProductPage: NextPage<IProductPageProps> = ({ product }) => {
     product.categories && product.categories[0] && product.categories[0].name;
 
   const [imageSelected, setImageSelected] = useState(img);
+  const [imageIndex, setImageIndex] = useState(0);
 
   const images: String[] = [];
 
@@ -102,7 +104,7 @@ const ProductPage: NextPage<IProductPageProps> = ({ product }) => {
     images.push(asset.url);
   });
 
-  console.log(images);
+  const [optionSelected, setOptionSelected] = useState('');
 
   const formatDescription = (des: string) => {
     const withwoutStartTags = des.replace(/[<][p][>]/gi, '');
@@ -115,27 +117,50 @@ const ProductPage: NextPage<IProductPageProps> = ({ product }) => {
     setCart(cart);
   };
 
-  const handleImage = (action: string, index: number) => {
-    if (index === 0 && action === 'BACK') return;
-    if (index === images.length && action === 'NEXT') return;
+  const addToCartWithVariant = async (productId: string, optionId: string) => {
+    const { cart } = await commerce.cart.add(productId, 1, {
+      vgrp_BkyN5YYqA50b69: optionId,
+    });
+
+    setCart(cart);
+  };
+
+  const handleImage = (action: string, index: number): String => {
+    console.log(product);
+    if (index === 0 && action === 'BACK') {
+      setImageIndex(0);
+      return images[0];
+    }
+    if (index === images.length - 1 && action === 'NEXT') {
+      setImageIndex(images.length - 1);
+      return images[images.length - 1];
+    }
 
     if (action === 'BACK') {
+      setImageIndex(index - 1);
       return images[index - 1];
     }
 
     if (action === 'NEXT') {
-      index += 1;
+      setImageIndex(index + 1);
       return images[index + 1];
     }
+
+    setImageIndex(0);
+    return images[0];
   };
+
+  const hasNext = (index: number): boolean => images[index + 1] !== undefined;
+
+  const hasPrevius = (index: number): boolean =>
+    images[index - 1] !== undefined;
 
   const handleVariant = (variantId: string) => {
     variantGroups[0].options.forEach(variant => {
       if (variantId === variant.id) {
         const tag = document.getElementById(variant.id);
         if (tag) tag.style.backgroundColor = '#9F7AEA';
-
-        handleImage(variant.name);
+        setOptionSelected(variant.id);
       } else {
         const tag = document.getElementById(variant.id);
         if (tag) tag.style.backgroundColor = '#e2e8f020';
@@ -186,40 +211,55 @@ const ProductPage: NextPage<IProductPageProps> = ({ product }) => {
             />
           </Button>
         </Flex>
-        <Box p={1} m={2}>
+        <Box p={1} m={2} pos='relative' display='flex' align='center'>
           <Image
-            src={imageSelected || ''}
+            src={imageSelected || img || ''}
             width='300px'
             height='300px'
             alt={name}
             className={styles.image}
           />
-        </Box>
-        <Flex width='80%' my={2} justify='space-between' align='center'>
-          <Text fontWeight='bold' fontSize='xl'>
-            {price}
-          </Text>
           <Button
+            aria-label='imageBack'
+            pos='absolute'
+            left={-2}
+            top='45%'
+            zIndex={5}
             color='highlight'
-            // eslint-disable-next-line react-hooks/rules-of-hooks
-            bgColor={useColorModeValue('background', 'contrast')}
+            bgColor='complementary'
             _hover={{ backgroundColor: 'none' }}
-            onClick={async e => {
-              e.preventDefault();
-              await addToCart(id);
-              toast({
-                description: `"${name}" as been added on your cart`,
-                status: 'success',
-                duration: 2000,
-                isClosable: true,
-              });
+            p={1}
+            borderRadius='50%'
+            opacity={hasPrevius(imageIndex) ? '0.9' : '0'}
+            onClick={() => {
+              const newImage = handleImage('BACK', imageIndex);
+              setImageSelected(String(newImage));
             }}
           >
-            Add to cart
+            <Icon as={BsArrowLeftShort} w={6} h={6} />
           </Button>
-        </Flex>
+          <Button
+            aria-label='imageNext'
+            pos='absolute'
+            right={-2}
+            top='45%'
+            zIndex={5}
+            color='highlight'
+            bgColor='complementary'
+            _hover={{ backgroundColor: 'none' }}
+            p={1}
+            borderRadius='50%'
+            opacity={hasNext(imageIndex) ? '0.9' : '0'}
+            onClick={() => {
+              const newImage = handleImage('NEXT', imageIndex);
+              setImageSelected(String(newImage));
+            }}
+          >
+            <Icon as={BsArrowRightShort} w={6} h={6} />
+          </Button>
+        </Box>
         {variantGroups[0] && (
-          <Flex flexDir='column'>
+          <Flex flexDir='column' mb={2}>
             <Text>{`Select ${variantGroups[0].name}`}</Text>
             <HStack wrap='wrap'>
               {variantGroups[0].options.map(opt => (
@@ -237,6 +277,33 @@ const ProductPage: NextPage<IProductPageProps> = ({ product }) => {
             </HStack>
           </Flex>
         )}
+        <Flex width='80%' my={2} justify='space-between' align='center'>
+          <Text fontWeight='bold' fontSize='xl'>
+            {price}
+          </Text>
+          <Button
+            color='highlight'
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            bgColor={useColorModeValue('background', 'contrast')}
+            _hover={{ backgroundColor: 'none' }}
+            onClick={async e => {
+              e.preventDefault();
+              if (variantGroups[0]) {
+                await addToCartWithVariant(id, optionSelected);
+              } else {
+                await addToCart(id);
+              }
+              toast({
+                description: `"${name}" as been added on your cart`,
+                status: 'success',
+                duration: 2000,
+                isClosable: true,
+              });
+            }}
+          >
+            Add to cart
+          </Button>
+        </Flex>
         <Flex my={4} w='90%'>
           <Accordion allowMultiple w='100%'>
             <AccordionItem>
@@ -252,7 +319,11 @@ const ProductPage: NextPage<IProductPageProps> = ({ product }) => {
             </AccordionItem>
           </Accordion>
         </Flex>
-        <Flex>
+        <Flex
+          onClick={() => {
+            setImageSelected('');
+          }}
+        >
           <RelatedProducts products={product.related_products} />
         </Flex>
       </Flex>
